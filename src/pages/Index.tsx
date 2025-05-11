@@ -5,7 +5,6 @@ import SheetSelector from "@/components/SheetSelector";
 import SearchForm from "@/components/SearchForm";
 import ResultsTable from "@/components/ResultsTable";
 import { fetchSheetData, SheetData, filterData } from "@/services/sheetsService";
-import { SEARCH_COLUMNS } from "@/config/config";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { toast } from "@/components/ui/use-toast";
 
@@ -45,15 +44,16 @@ const Index = () => {
   };
 
   const handleSearch = (value1: string, value2: string) => {
-    if (!sheetData) return;
-
-    const column1 = SEARCH_COLUMNS.column1.key;
-    const column2 = SEARCH_COLUMNS.column2.key;
+    if (!sheetData || !sheetData.headers) return;
 
     if (value1.trim() === "" && value2.trim() === "") {
       setFilteredData([]);
       return;
     }
+
+    // Get the selected columns (default to the first two if not selected)
+    const column1 = sheetData.headers[0] || "";
+    const column2 = sheetData.headers[1] || "";
 
     const filtered = filterData(sheetData, column1, value1, column2, value2);
     setFilteredData(filtered);
@@ -61,7 +61,7 @@ const Index = () => {
     if (filtered.length === 0) {
       toast({
         title: t("noDataFound"),
-        description: "Please try different search terms.",
+        description: t("tryDifferentSearch"),
       });
     }
   };

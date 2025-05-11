@@ -15,8 +15,8 @@ interface SearchFormProps {
 const SearchForm: React.FC<SearchFormProps> = ({ onSearch, headers }) => {
   const [searchValue1, setSearchValue1] = useState("");
   const [searchValue2, setSearchValue2] = useState("");
-  const [selectedColumn1, setSelectedColumn1] = useState(SEARCH_COLUMNS.column1.key);
-  const [selectedColumn2, setSelectedColumn2] = useState(SEARCH_COLUMNS.column2.key);
+  const [selectedColumn1, setSelectedColumn1] = useState(headers[0] || "");
+  const [selectedColumn2, setSelectedColumn2] = useState(headers[1] || "");
   const { t } = useLanguage();
 
   const handleSearch = (e: React.FormEvent) => {
@@ -44,7 +44,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch, headers }) => {
         <form onSubmit={handleSearch} className="space-y-6">
           <div className="space-y-2">
             <label className="text-sm font-medium">
-              {t("firstSearchColumn")}
+              {t("firstColumn")}
             </label>
             <Select value={selectedColumn1} onValueChange={handleSelectColumn1}>
               <SelectTrigger className="w-full">
@@ -73,7 +73,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch, headers }) => {
 
           <div className="space-y-2">
             <label className="text-sm font-medium">
-              {t("secondSearchColumn")}
+              {t("secondColumn")}
             </label>
             <Select value={selectedColumn2} onValueChange={handleSelectColumn2}>
               <SelectTrigger className="w-full">

@@ -53,6 +53,11 @@ export async function fetchSheetData(sheetName: string): Promise<SheetData> {
     }
     
     const data = await response.json();
+    
+    if (!data.values || data.values.length === 0) {
+      return { headers: [], rows: [] };
+    }
+    
     const headers = data.values[0];
     const rows: Record<string, string>[] = [];
     
@@ -94,11 +99,14 @@ export function filterData(
   column2: string,
   value2: string
 ): Record<string, string>[] {
+  if (!data || !data.rows) return [];
   if (!value1 && !value2) return [];
   
   return data.rows.filter(row => {
-    const matchesColumn1 = !value1 || row[column1]?.toLowerCase().includes(value1.toLowerCase());
-    const matchesColumn2 = !value2 || row[column2]?.toLowerCase().includes(value2.toLowerCase());
+    const matchesColumn1 = !value1 || 
+      (column1 && row[column1] && row[column1].toLowerCase().includes(value1.toLowerCase()));
+    const matchesColumn2 = !value2 || 
+      (column2 && row[column2] && row[column2].toLowerCase().includes(value2.toLowerCase()));
     return matchesColumn1 && matchesColumn2;
   });
 }
