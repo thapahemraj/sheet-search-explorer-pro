@@ -8,13 +8,13 @@
 
 // Google API Credentials
 // Go to Google Cloud Console (https://console.cloud.google.com/) to get your API key
-export const GOOGLE_API_KEY = "YOUR_GOOGLE_API_KEY";
+export const GOOGLE_API_KEY = "AIzaSyA0OiVh0_l42LuY_booD8NLRPD6o3M8O78";
 
 // Spreadsheet ID
 // This is the unique identifier for your Google Spreadsheet
 // You can find this in the URL of your spreadsheet:
 // https://docs.google.com/spreadsheets/d/SPREADSHEET_ID/edit
-export const SPREADSHEET_ID = "YOUR_SPREADSHEET_ID";
+export const SPREADSHEET_ID = "1VvBc-6z-5ViSZfCxNYjV9MWvLtJ62kDG_S5tzJi26l0";
 
 // Search Columns Configuration
 // Specify which two columns should be used for searching
@@ -41,7 +41,6 @@ export const DISABLE_FLAG_COLUMN = "Disabled";
 
 // Application Theme Configuration
 export const DEFAULT_THEME = "system"; // Options: "light", "dark", "system"
-export const DEFAULT_COLOR = "blue"; // Options: "blue", "green", "red", "black", "white"
 export const DEFAULT_LANGUAGE = "en"; // Options: "en" (English), "ne" (Nepali), "hi" (Hindi)
 
 // Display Configuration
