@@ -79,7 +79,10 @@ const Index = () => {
             </div>
 
             {selectedSheet && (
-              <SearchForm onSearch={handleSearch} />
+              <SearchForm 
+                onSearch={handleSearch} 
+                headers={sheetData?.headers || []} 
+              />
             )}
           </div>
 
