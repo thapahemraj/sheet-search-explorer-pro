@@ -4,8 +4,9 @@ import Header from "@/components/Header";
 import SheetSelector from "@/components/SheetSelector";
 import SearchForm from "@/components/SearchForm";
 import ResultsTable from "@/components/ResultsTable";
-import { fetchSheetData, SheetData, filterData } from "@/services/sheetsService";
-import { SEARCH_COLUMNS } from "@/config/config";
+import { 
+  fetchSheetData, SheetData, filterData, getSearchColumnNames
+} from "@/services/sheetsService";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { toast } from "@/components/ui/use-toast";
 
@@ -14,6 +15,7 @@ const Index = () => {
   const [sheetData, setSheetData] = useState<SheetData | null>(null);
   const [filteredData, setFilteredData] = useState<Record<string, string>[]>([]);
   const [loading, setLoading] = useState(false);
+  const [searchColumnNames, setSearchColumnNames] = useState<[string, string]>(["", ""]);
   const { t } = useLanguage();
 
   useEffect(() => {
@@ -24,6 +26,10 @@ const Index = () => {
         setLoading(true);
         const data = await fetchSheetData(selectedSheet);
         setSheetData(data);
+        
+        // Set the search column names based on the headers
+        setSearchColumnNames(getSearchColumnNames(data.headers));
+        
         setFilteredData([]); // Reset filtered data when sheet changes
       } catch (error) {
         console.error("Error loading sheet data:", error);
@@ -45,23 +51,31 @@ const Index = () => {
   };
 
   const handleSearch = (value1: string, value2: string) => {
-    if (!sheetData) return;
+    if (!sheetData || !searchColumnNames[0] || !searchColumnNames[1]) return;
 
-    const column1 = SEARCH_COLUMNS.column1.key;
-    const column2 = SEARCH_COLUMNS.column2.key;
-
-    if (value1.trim() === "" && value2.trim() === "") {
+    if (value1.trim() === "" || value2.trim() === "") {
       setFilteredData([]);
+      toast({
+        title: t("noDataFound"),
+        description: t("tryDifferentSearch"),
+      });
       return;
     }
 
-    const filtered = filterData(sheetData, column1, value1, column2, value2);
+    const filtered = filterData(
+      sheetData, 
+      searchColumnNames[0], 
+      value1, 
+      searchColumnNames[1], 
+      value2
+    );
+    
     setFilteredData(filtered);
 
     if (filtered.length === 0) {
       toast({
         title: t("noDataFound"),
-        description: "Please try different search terms.",
+        description: t("tryDifferentSearch"),
       });
     }
   };
@@ -79,7 +93,10 @@ const Index = () => {
             </div>
 
             {selectedSheet && (
-              <SearchForm onSearch={handleSearch} />
+              <SearchForm 
+                onSearch={handleSearch} 
+                columnNames={searchColumnNames}
+              />
             )}
           </div>
 

@@ -1,5 +1,5 @@
 
-import { GOOGLE_API_KEY, SPREADSHEET_ID, DISABLE_FLAG_COLUMN } from '@/config/config';
+import { GOOGLE_API_KEY, SPREADSHEET_ID, DISABLE_FLAG_COLUMN, SEARCH_COLUMN_POSITIONS } from '@/config/config';
 
 export interface Sheet {
   id: string;
@@ -79,7 +79,20 @@ export async function fetchSheetData(sheetName: string): Promise<SheetData> {
 }
 
 /**
- * Filters sheet data based on search criteria
+ * Get the search column names based on the positions defined in config
+ * @param headers - The headers from the spreadsheet
+ * @returns [string, string] - The two column names to search on
+ */
+export function getSearchColumnNames(headers: string[]): [string, string] {
+  // Get column names based on the position defined in the config
+  const column1 = headers[SEARCH_COLUMN_POSITIONS.column1] || "Column 1";
+  const column2 = headers[SEARCH_COLUMN_POSITIONS.column2] || "Column 2";
+  
+  return [column1, column2];
+}
+
+/**
+ * Filters sheet data based on search criteria (requires both columns to match)
  * @param data - The sheet data to filter
  * @param column1 - The first column to search
  * @param value1 - The value to search for in the first column
@@ -94,11 +107,11 @@ export function filterData(
   column2: string,
   value2: string
 ): Record<string, string>[] {
-  if (!value1 && !value2) return [];
+  if (!value1 || !value2) return []; // Both fields must have values
   
   return data.rows.filter(row => {
-    const matchesColumn1 = !value1 || row[column1]?.toLowerCase().includes(value1.toLowerCase());
-    const matchesColumn2 = !value2 || row[column2]?.toLowerCase().includes(value2.toLowerCase());
-    return matchesColumn1 && matchesColumn2;
+    const matchesColumn1 = row[column1]?.toLowerCase().includes(value1.toLowerCase());
+    const matchesColumn2 = row[column2]?.toLowerCase().includes(value2.toLowerCase());
+    return matchesColumn1 && matchesColumn2; // Both must match
   });
 }

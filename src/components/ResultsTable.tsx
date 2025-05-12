@@ -1,7 +1,6 @@
 
 import React from "react";
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 interface ResultsTableProps {
@@ -24,27 +23,29 @@ const ResultsTable: React.FC<ResultsTableProps> = ({ headers, data }) => {
   const visibleHeaders = headers.filter(header => header !== "Disabled");
 
   return (
-    <Card className="overflow-hidden">
-      <Table>
-        <TableCaption>{t("searchResults")}: {data.length} {t("rows")}</TableCaption>
-        <TableHeader>
-          <TableRow>
-            {visibleHeaders.map((header) => (
-              <TableHead key={header}>{header}</TableHead>
-            ))}
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {data.map((row, rowIndex) => (
-            <TableRow key={rowIndex}>
+    <div className="space-y-6">
+      <div className="text-xl font-semibold">
+        {t("searchResults")}: {data.length} {t("rows")}
+      </div>
+      
+      {data.map((row, rowIndex) => (
+        <Card key={rowIndex} className="overflow-hidden">
+          <CardHeader>
+            <CardTitle>Record #{rowIndex + 1}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="divide-y">
               {visibleHeaders.map((header) => (
-                <TableCell key={`${rowIndex}-${header}`}>{row[header]}</TableCell>
+                <div key={`${rowIndex}-${header}`} className="py-2 grid grid-cols-3">
+                  <div className="font-medium">{header}</div>
+                  <div className="col-span-2">{row[header] || '-'}</div>
+                </div>
               ))}
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </Card>
+            </div>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
   );
 };
 
