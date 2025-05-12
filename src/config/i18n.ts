@@ -26,6 +26,9 @@ export interface Translations {
   firstSearchColumn: string;
   secondSearchColumn: string;
   selectColumn: string;
+  firstColumn: string;
+  secondColumn: string;
+  tryDifferentSearch: string;
 }
 
 export const translations: Record<Language, Translations> = {
@@ -54,6 +57,9 @@ export const translations: Record<Language, Translations> = {
     firstSearchColumn: "First Search Column",
     secondSearchColumn: "Second Search Column",
     selectColumn: "Select Column",
+    firstColumn: "First Column",
+    secondColumn: "Second Column",
+    tryDifferentSearch: "Please try different search terms.",
   },
   ne: {
     appTitle: "गुगल सिट भ्युअर",
@@ -80,6 +86,9 @@ export const translations: Record<Language, Translations> = {
     firstSearchColumn: "पहिलो खोज स्तम्भ",
     secondSearchColumn: "दोस्रो खोज स्तम्भ",
     selectColumn: "स्तम्भ चयन गर्नुहोस्",
+    firstColumn: "पहिलो स्तम्भ",
+    secondColumn: "दोस्रो स्तम्भ",
+    tryDifferentSearch: "कृपया फरक खोज शब्दहरू प्रयास गर्नुहोस्।",
   },
   hi: {
     appTitle: "गूगल शीट व्यूअर",
@@ -106,5 +115,8 @@ export const translations: Record<Language, Translations> = {
     firstSearchColumn: "पहला खोज कॉलम",
     secondSearchColumn: "दूसरा खोज कॉलम", 
     selectColumn: "कॉलम चुनें",
+    firstColumn: "पहला कॉलम",
+    secondColumn: "दूसरा कॉलम",
+    tryDifferentSearch: "कृपया अलग खोज शब्द आज़माएं।",
   }
 };
