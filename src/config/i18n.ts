@@ -31,6 +31,7 @@ export interface Translations {
   column3: string;
   column4: string;
   column5: string;
+  [key: `column${number}`]: string; // Add index signature for dynamic column keys
 }
 
 export const translations: Record<Language, Translations> = {

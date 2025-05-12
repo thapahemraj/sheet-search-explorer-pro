@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Search } from "lucide-react";
 import { SEARCH_COLUMNS } from "@/config/config";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { translations } from "@/config/i18n";
 
 interface SearchFormProps {
   onSearch: (values: string[]) => void;
@@ -42,7 +43,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch, columnNames }) => {
           {SEARCH_COLUMNS.map((column, index) => {
             // Get display label (either custom from config or the original header name)
             const columnLabel = column.customLabel || 
-                               (index < columnNames.length ? columnNames[index] : t(`column${index + 1}`));
+                               (index < columnNames.length ? columnNames[index] : t(`column${index + 1}` as keyof typeof translations.en));
             
             return (
               <div key={index}>
