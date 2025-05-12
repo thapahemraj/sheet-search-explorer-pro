@@ -23,6 +23,9 @@ export interface Translations {
   hindi: string;
   searchResults: string;
   rows: string;
+  firstColumn: string;
+  secondColumn: string;
+  tryDifferentSearch: string;
 }
 
 export const translations: Record<Language, Translations> = {
@@ -48,6 +51,9 @@ export const translations: Record<Language, Translations> = {
     hindi: "Hindi",
     searchResults: "Search Results",
     rows: "rows",
+    firstColumn: "First Column",
+    secondColumn: "Second Column",
+    tryDifferentSearch: "Please try a different search query.",
   },
   ne: {
     appTitle: "गुगल सिट भ्युअर",
@@ -71,6 +77,9 @@ export const translations: Record<Language, Translations> = {
     hindi: "हिन्दी",
     searchResults: "खोज परिणामहरू",
     rows: "पंक्तिहरू",
+    firstColumn: "पहिलो स्तम्भ",
+    secondColumn: "दोस्रो स्तम्भ",
+    tryDifferentSearch: "कृपया फरक खोज प्रश्न प्रयास गर्नुहोस्।",
   },
   hi: {
     appTitle: "गूगल शीट व्यूअर",
@@ -94,5 +103,8 @@ export const translations: Record<Language, Translations> = {
     hindi: "हिंदी",
     searchResults: "खोज परिणाम",
     rows: "पंक्तियां",
+    firstColumn: "पहला कॉलम",
+    secondColumn: "दूसरा कॉलम",
+    tryDifferentSearch: "कृपया एक अलग खोज प्रश्न का प्रयास करें।",
   }
 };
