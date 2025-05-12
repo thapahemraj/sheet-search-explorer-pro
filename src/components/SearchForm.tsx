@@ -1,107 +1,57 @@
 
 import React, { useState } from "react";
+import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { FloatingLabel } from "flowbite-react";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { Search } from "lucide-react";
 import { SEARCH_COLUMNS } from "@/config/config";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface SearchFormProps {
   onSearch: (value1: string, value2: string) => void;
-  headers: string[];
 }
 
-const SearchForm: React.FC<SearchFormProps> = ({ onSearch, headers }) => {
-  const [searchValue1, setSearchValue1] = useState("");
-  const [searchValue2, setSearchValue2] = useState("");
-  const [selectedColumn1, setSelectedColumn1] = useState(headers[0] || "");
-  const [selectedColumn2, setSelectedColumn2] = useState(headers[1] || "");
+const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
+  const [value1, setValue1] = useState("");
+  const [value2, setValue2] = useState("");
   const { t } = useLanguage();
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSearch(searchValue1, searchValue2);
+    onSearch(value1, value2);
   };
-
-  const handleSelectColumn1 = (column: string) => {
-    setSelectedColumn1(column);
-  };
-
-  const handleSelectColumn2 = (column: string) => {
-    setSelectedColumn2(column);
-  };
-
-  // Filter out any possible "Disabled" column
-  const selectableHeaders = headers.filter(header => header !== "Disabled");
 
   return (
-    <Card>
+    <Card className="shadow-md">
       <CardHeader>
         <CardTitle>{t("search")}</CardTitle>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSearch} className="space-y-6">
-          <div className="space-y-2">
-            <label className="text-sm font-medium">
-              {t("firstColumn")}
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label htmlFor="value1" className="block text-sm font-medium mb-1">
+              {SEARCH_COLUMNS.column1.label}:
             </label>
-            <Select value={selectedColumn1} onValueChange={handleSelectColumn1}>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder={t("selectColumn")} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  {selectableHeaders.map(header => (
-                    <SelectItem key={header} value={header}>
-                      {header}
-                    </SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-            <div className="mt-3">
-              <FloatingLabel 
-                variant="outlined" 
-                value={searchValue1}
-                onChange={(e) => setSearchValue1(e.target.value)}
-                label={selectedColumn1}
-                className="w-full"
-              />
-            </div>
+            <Input
+              id="value1"
+              value={value1}
+              onChange={(e) => setValue1(e.target.value)}
+              placeholder={SEARCH_COLUMNS.column1.label}
+            />
           </div>
-
-          <div className="space-y-2">
-            <label className="text-sm font-medium">
-              {t("secondColumn")}
+          <div>
+            <label htmlFor="value2" className="block text-sm font-medium mb-1">
+              {SEARCH_COLUMNS.column2.label}:
             </label>
-            <Select value={selectedColumn2} onValueChange={handleSelectColumn2}>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder={t("selectColumn")} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  {selectableHeaders.map(header => (
-                    <SelectItem key={header} value={header}>
-                      {header}
-                    </SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-            <div className="mt-3">
-              <FloatingLabel 
-                variant="outlined" 
-                value={searchValue2}
-                onChange={(e) => setSearchValue2(e.target.value)}
-                label={selectedColumn2}
-                className="w-full"
-              />
-            </div>
+            <Input
+              id="value2"
+              value={value2}
+              onChange={(e) => setValue2(e.target.value)}
+              placeholder={SEARCH_COLUMNS.column2.label}
+            />
           </div>
-
           <Button type="submit" className="w-full">
-            {t("search")}
+            <Search className="mr-2 h-4 w-4" /> {t("search")}
           </Button>
         </form>
       </CardContent>
