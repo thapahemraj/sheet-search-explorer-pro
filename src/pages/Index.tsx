@@ -15,7 +15,7 @@ const Index = () => {
   const [sheetData, setSheetData] = useState<SheetData | null>(null);
   const [filteredData, setFilteredData] = useState<Record<string, string>[]>([]);
   const [loading, setLoading] = useState(false);
-  const [searchColumnNames, setSearchColumnNames] = useState<[string, string]>(["", ""]);
+  const [searchColumnNames, setSearchColumnNames] = useState<string[]>([]);
   const { t } = useLanguage();
 
   useEffect(() => {
@@ -50,10 +50,10 @@ const Index = () => {
     setSelectedSheet(sheetName);
   };
 
-  const handleSearch = (value1: string, value2: string) => {
-    if (!sheetData || !searchColumnNames[0] || !searchColumnNames[1]) return;
+  const handleSearch = (searchValues: string[]) => {
+    if (!sheetData || searchColumnNames.length === 0) return;
 
-    if (value1.trim() === "" || value2.trim() === "") {
+    if (searchValues.some(value => value.trim() === "")) {
       setFilteredData([]);
       toast({
         title: t("noDataFound"),
@@ -64,10 +64,8 @@ const Index = () => {
 
     const filtered = filterData(
       sheetData, 
-      searchColumnNames[0], 
-      value1, 
-      searchColumnNames[1], 
-      value2
+      searchColumnNames, 
+      searchValues
     );
     
     setFilteredData(filtered);

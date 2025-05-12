@@ -1,5 +1,5 @@
 
-import { GOOGLE_API_KEY, SPREADSHEET_ID, DISABLE_FLAG_COLUMN, SEARCH_COLUMN_POSITIONS } from '@/config/config';
+import { GOOGLE_API_KEY, SPREADSHEET_ID, DISABLE_FLAG_COLUMN, SEARCH_COLUMNS } from '@/config/config';
 
 export interface Sheet {
   id: string;
@@ -81,37 +81,39 @@ export async function fetchSheetData(sheetName: string): Promise<SheetData> {
 /**
  * Get the search column names based on the positions defined in config
  * @param headers - The headers from the spreadsheet
- * @returns [string, string] - The two column names to search on
+ * @returns string[] - The column names to search on
  */
-export function getSearchColumnNames(headers: string[]): [string, string] {
-  // Get column names based on the position defined in the config
-  const column1 = headers[SEARCH_COLUMN_POSITIONS.column1] || "Column 1";
-  const column2 = headers[SEARCH_COLUMN_POSITIONS.column2] || "Column 2";
-  
-  return [column1, column2];
+export function getSearchColumnNames(headers: string[]): string[] {
+  // Get column names based on the positions defined in the config
+  return SEARCH_COLUMNS.map(column => {
+    const position = column.position;
+    return position < headers.length ? headers[position] : `Column ${position + 1}`;
+  });
 }
 
 /**
- * Filters sheet data based on search criteria (requires both columns to match)
+ * Filters sheet data based on search criteria (requires all columns to match)
  * @param data - The sheet data to filter
- * @param column1 - The first column to search
- * @param value1 - The value to search for in the first column
- * @param column2 - The second column to search
- * @param value2 - The value to search for in the second column
+ * @param columnNames - The column names to search
+ * @param searchValues - The values to search for in each column
  * @returns Record<string, string>[] - The filtered rows
  */
 export function filterData(
   data: SheetData,
-  column1: string,
-  value1: string,
-  column2: string,
-  value2: string
+  columnNames: string[],
+  searchValues: string[]
 ): Record<string, string>[] {
-  if (!value1 || !value2) return []; // Both fields must have values
+  // If any search value is empty, return empty result
+  if (searchValues.some(value => !value.trim())) {
+    return [];
+  }
   
   return data.rows.filter(row => {
-    const matchesColumn1 = row[column1]?.toLowerCase().includes(value1.toLowerCase());
-    const matchesColumn2 = row[column2]?.toLowerCase().includes(value2.toLowerCase());
-    return matchesColumn1 && matchesColumn2; // Both must match
+    // Each column search must match
+    return columnNames.every((columnName, index) => {
+      const searchValue = searchValues[index];
+      if (!searchValue) return true; // Skip empty search values
+      return row[columnName]?.toLowerCase().includes(searchValue.toLowerCase());
+    });
   });
 }

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { fetchSheets, Sheet } from "@/services/sheetsService";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { DEFAULT_SHEET_NAME } from "@/config/config";
 
 interface SheetSelectorProps {
   onSheetSelect: (sheetName: string) => void;
@@ -12,6 +13,7 @@ const SheetSelector: React.FC<SheetSelectorProps> = ({ onSheetSelect }) => {
   const [sheets, setSheets] = useState<Sheet[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [selectedSheet, setSelectedSheet] = useState<string>("");
   const { t } = useLanguage();
 
   useEffect(() => {
@@ -22,9 +24,13 @@ const SheetSelector: React.FC<SheetSelectorProps> = ({ onSheetSelect }) => {
         setSheets(sheetsData);
         setError(null);
         
-        // Auto-select the first sheet if available
-        if (sheetsData.length > 0) {
-          onSheetSelect(sheetsData[0].title);
+        // Select the default sheet if specified, otherwise select the first sheet
+        const defaultSheet = DEFAULT_SHEET_NAME && sheetsData.find(s => s.title === DEFAULT_SHEET_NAME);
+        const sheetToSelect = defaultSheet ? defaultSheet.title : (sheetsData.length > 0 ? sheetsData[0].title : "");
+        
+        if (sheetToSelect) {
+          setSelectedSheet(sheetToSelect);
+          onSheetSelect(sheetToSelect);
         }
       } catch (err) {
         setError("Failed to load sheets. Please check your API key and spreadsheet ID.");
@@ -36,6 +42,11 @@ const SheetSelector: React.FC<SheetSelectorProps> = ({ onSheetSelect }) => {
 
     getSheets();
   }, [onSheetSelect]);
+
+  const handleSheetChange = (value: string) => {
+    setSelectedSheet(value);
+    onSheetSelect(value);
+  };
 
   if (loading) {
     return (
@@ -54,7 +65,7 @@ const SheetSelector: React.FC<SheetSelectorProps> = ({ onSheetSelect }) => {
   }
 
   return (
-    <Select onValueChange={onSheetSelect}>
+    <Select value={selectedSheet} onValueChange={handleSheetChange}>
       <SelectTrigger className="w-full">
         <SelectValue placeholder={t("selectSheet")} />
       </SelectTrigger>

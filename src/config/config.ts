@@ -16,21 +16,21 @@ export const GOOGLE_API_KEY = "AIzaSyA0OiVh0_l42LuY_booD8NLRPD6o3M8O78";
 // https://docs.google.com/spreadsheets/d/SPREADSHEET_ID/edit
 export const SPREADSHEET_ID = "1VvBc-6z-5ViSZfCxNYjV9MWvLtJ62kDG_S5tzJi26l0";
 
-// Dynamic Search Configuration
-// Setting to determine which columns to use for search (by position)
-// First column = 0, Second column = 1, and so on
-export const SEARCH_COLUMN_POSITIONS = {
-  column1: 0, // Position of first search column (index starts at 0)
-  column2: 1  // Position of second search column (index starts at 1)
-};
+// Default Sheet Name
+// If you want a specific sheet to be selected by default, enter its name here
+// Leave empty ("") for no default selection
+export const DEFAULT_SHEET_NAME = "Sheet2";
 
-// Custom Column Labels (Optional)
-// If provided, these will override the actual column names in the UI
-// Set to null to use the original column names from the spreadsheet
-export const CUSTOM_COLUMN_LABELS = {
-  column1: null, // Custom label for the first search column (null = use original name)
-  column2: null  // Custom label for the second search column (null = use original name)
-};
+// Search Columns Configuration
+// Configure which columns to use for search (by position)
+// First column = 0, Second column = 1, and so on
+// Add or remove entries to change the number of search fields
+export const SEARCH_COLUMNS = [
+  { position: 0, customLabel: null }, // First search column
+  { position: 1, customLabel: null }, // Second search column
+  // Uncomment and modify to add more search columns:
+  // { position: 2, customLabel: null }, // Third search column
+];
 
 // Disable Flag Column (Optional)
 // If your spreadsheet has a column that should be used to hide certain rows,
