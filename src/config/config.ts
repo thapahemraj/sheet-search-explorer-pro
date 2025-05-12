@@ -41,7 +41,6 @@ export const DISABLE_FLAG_COLUMN = "Disabled";
 
 // Application Theme Configuration
 export const DEFAULT_THEME = "system"; // Options: "light", "dark", "system"
-export const DEFAULT_COLOR = "blue"; // Options: "blue", "green", "red", "black", "white"
 export const DEFAULT_LANGUAGE = "en"; // Options: "en" (English), "ne" (Nepali), "hi" (Hindi)
 
 // Display Configuration

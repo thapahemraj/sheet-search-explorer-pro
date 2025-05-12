@@ -24,13 +24,22 @@ const SheetSelector: React.FC<SheetSelectorProps> = ({ onSheetSelect }) => {
         setSheets(sheetsData);
         setError(null);
         
-        // Select the default sheet if specified, otherwise select the first sheet
-        const defaultSheet = DEFAULT_SHEET_NAME && sheetsData.find(s => s.title === DEFAULT_SHEET_NAME);
-        const sheetToSelect = defaultSheet ? defaultSheet.title : (sheetsData.length > 0 ? sheetsData[0].title : "");
+        // Select the default sheet if specified and it exists in the sheets data
+        if (DEFAULT_SHEET_NAME) {
+          const defaultSheetExists = sheetsData.some(sheet => sheet.title === DEFAULT_SHEET_NAME);
+          if (defaultSheetExists) {
+            setSelectedSheet(DEFAULT_SHEET_NAME);
+            onSheetSelect(DEFAULT_SHEET_NAME);
+            console.log("Selected default sheet:", DEFAULT_SHEET_NAME);
+            return;
+          }
+        }
         
-        if (sheetToSelect) {
-          setSelectedSheet(sheetToSelect);
-          onSheetSelect(sheetToSelect);
+        // If default sheet doesn't exist or none specified, select the first sheet
+        if (sheetsData.length > 0) {
+          setSelectedSheet(sheetsData[0].title);
+          onSheetSelect(sheetsData[0].title);
+          console.log("Selected first sheet:", sheetsData[0].title);
         }
       } catch (err) {
         setError("Failed to load sheets. Please check your API key and spreadsheet ID.");

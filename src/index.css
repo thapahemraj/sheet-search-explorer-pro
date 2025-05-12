@@ -65,34 +65,6 @@
     --input: 217.2 32.6% 17.5%;
     --ring: 224.3 76.3% 48%;
   }
-
-  /* Green theme */
-  .theme-green {
-    --primary: 142.1 76.2% 36.3%;
-    --primary-foreground: 355.7 100% 97.3%;
-    --ring: 142.1 76.2% 36.3%;
-  }
-
-  /* Red theme */
-  .theme-red {
-    --primary: 0 72.2% 50.6%;
-    --primary-foreground: 0 0% 100%;
-    --ring: 0 72.2% 50.6%;
-  }
-
-  /* Black theme */
-  .theme-black {
-    --primary: 0 0% 0%;
-    --primary-foreground: 0 0% 100%;
-    --ring: 0 0% 0%;
-  }
-
-  /* White theme */
-  .theme-white {
-    --primary: 0 0% 100%;
-    --primary-foreground: 0 0% 0%;
-    --ring: 0 0% 70%;
-  }
 }
 
 @layer base {
