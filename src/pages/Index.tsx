@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import SheetSelector from "@/components/SheetSelector";
@@ -8,6 +7,7 @@ import {
   fetchSheetData, SheetData, filterData, getSearchColumnNames
 } from "@/services/sheetsService";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useTheme } from "@/contexts/ThemeContext";
 import { toast } from "@/components/ui/use-toast";
 
 const Index = () => {
@@ -17,6 +17,7 @@ const Index = () => {
   const [loading, setLoading] = useState(false);
   const [searchColumnNames, setSearchColumnNames] = useState<string[]>([]);
   const { t } = useLanguage();
+  const { mode } = useTheme();
 
   useEffect(() => {
     async function loadSheetData() {
@@ -119,9 +120,9 @@ const Index = () => {
         </div>
       </main>
 
-      <footer className="border-t mt-12 py-6 px-4">
-        <div className="container mx-auto text-center text-muted-foreground text-sm">
-          &copy; {new Date().getFullYear()} Google Sheets Viewer
+      <footer className={`${mode === 'dark' ? 'bg-black' : 'bg-white'} border-t p-4 shadow-md`}>
+        <div className="container mx-auto text-center text-foreground text-sm font-light">
+          &copy; {new Date().getFullYear()}
         </div>
       </footer>
     </div>

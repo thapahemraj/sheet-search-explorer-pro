@@ -45,3 +45,8 @@ export const DEFAULT_LANGUAGE = "en"; // Options: "en" (English), "ne" (Nepali),
 
 // Display Configuration
 export const ROWS_PER_PAGE = 10; // Number of rows to display per page
+
+// Logo Configuration
+// Path to your logo image. Set to empty string ("") to hide logo.
+export const LOGO_PATH = "/placeholder.svg"; // Example: "/logo.png" or "https://yoursite.com/logo.png"
+

@@ -4,14 +4,24 @@ import { useTheme } from "@/contexts/ThemeContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import ThemeSwitcher from "./ThemeSwitcher";
 import LanguageSwitcher from "./LanguageSwitcher";
+import { LOGO_PATH } from "@/config/config";
 
 const Header: React.FC = () => {
   const { t } = useLanguage();
+  const { mode } = useTheme();
   
   return (
-    <header className="bg-primary text-primary-foreground p-4 shadow-md">
+    <header className={`${mode === 'dark' ? 'bg-black' : 'bg-white'} text-foreground p-4 shadow-md`}>
       <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center">
-        <h1 className="text-2xl font-bold mb-4 sm:mb-0">{t("appTitle")}</h1>
+        <div className="flex items-center mb-4 sm:mb-0">
+          {LOGO_PATH && (
+            <img 
+              src={LOGO_PATH} 
+              alt="Logo" 
+              className="h-8 mr-3" 
+            />
+          )}
+        </div>
         <div className="flex space-x-4 items-center">
           <ThemeSwitcher />
           <LanguageSwitcher />
