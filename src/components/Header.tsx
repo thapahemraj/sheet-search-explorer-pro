@@ -8,10 +8,13 @@ import { LOGO_PATH } from "@/config/config";
 
 const Header: React.FC = () => {
   const { t } = useLanguage();
-  const { mode } = useTheme();
+  const { mode, systemTheme } = useTheme();
+  
+  // Determine the effective theme (what's actually being applied)
+  const effectiveTheme = mode === 'system' ? systemTheme : mode;
   
   return (
-    <header className={`${mode === 'dark' ? 'bg-black' : 'bg-white'} text-foreground p-4 shadow-md`}>
+    <header className={`${effectiveTheme === 'dark' ? 'bg-black' : 'bg-white'} text-foreground p-4 shadow-md`}>
       <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center">
         <div className="flex items-center mb-4 sm:mb-0">
           {LOGO_PATH && (

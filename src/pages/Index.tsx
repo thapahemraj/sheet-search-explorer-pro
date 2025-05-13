@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import SheetSelector from "@/components/SheetSelector";
@@ -18,7 +17,10 @@ const Index = () => {
   const [loading, setLoading] = useState(false);
   const [searchColumnNames, setSearchColumnNames] = useState<string[]>([]);
   const { t } = useLanguage();
-  const { mode } = useTheme();
+  const { mode, systemTheme } = useTheme();
+  
+  // Determine the effective theme (what's actually being applied)
+  const effectiveTheme = mode === 'system' ? systemTheme : mode;
 
   useEffect(() => {
     async function loadSheetData() {
@@ -121,7 +123,7 @@ const Index = () => {
         </div>
       </main>
 
-      <footer className={`${mode === 'dark' ? 'bg-black' : 'bg-white'} border-t p-4 shadow-md mt-auto`}>
+      <footer className={`${effectiveTheme === 'dark' ? 'bg-black' : 'bg-white'} border-t p-4 shadow-md mt-auto`}>
         <div className="container mx-auto text-center text-foreground text-sm font-light">
           &copy; {new Date().getFullYear()}
         </div>
