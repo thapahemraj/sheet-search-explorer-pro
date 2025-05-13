@@ -18,16 +18,29 @@ export const useTheme = () => useContext(ThemeContext);
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [mode, setMode] = useState<ThemeMode>((localStorage.getItem("theme") as ThemeMode) || DEFAULT_THEME as ThemeMode);
+  const [systemTheme, setSystemTheme] = useState<"light" | "dark">(
+    window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+  );
+
+  // Listen for changes in system preference
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    
+    const handleChange = (e: MediaQueryListEvent) => {
+      setSystemTheme(e.matches ? "dark" : "light");
+    };
+    
+    mediaQuery.addEventListener("change", handleChange);
+    
+    return () => {
+      mediaQuery.removeEventListener("change", handleChange);
+    };
+  }, []);
 
   useEffect(() => {
     const root = window.document.documentElement;
     
-    // Handle system preference
-    const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
-      ? "dark"
-      : "light";
-    
-    // Apply theme
+    // Apply theme based on mode and system preference
     if (mode === "system") {
       root.classList.remove("dark", "light");
       root.classList.add(systemTheme);
@@ -38,7 +51,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
     // Save preferences
     localStorage.setItem("theme", mode);
-  }, [mode]);
+  }, [mode, systemTheme]);
 
   return (
     <ThemeContext.Provider value={{ mode, setMode }}>
