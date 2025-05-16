@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import SheetSelector from "@/components/SheetSelector";
@@ -31,8 +32,8 @@ const Index = () => {
         const data = await fetchSheetData(selectedSheet);
         setSheetData(data);
         
-        // Set the search column names based on the headers
-        setSearchColumnNames(getSearchColumnNames(data.headers));
+        // Set the search column names based on the headers and selected sheet
+        setSearchColumnNames(getSearchColumnNames(data.headers, selectedSheet));
         
         setFilteredData([]); // Reset filtered data when sheet changes
       } catch (error) {
@@ -98,6 +99,7 @@ const Index = () => {
               <SearchForm 
                 onSearch={handleSearch} 
                 columnNames={searchColumnNames}
+                sheetName={selectedSheet}
               />
             )}
           </div>

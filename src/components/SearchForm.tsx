@@ -4,23 +4,26 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Search } from "lucide-react";
-import { SEARCH_COLUMNS } from "@/config/config";
+import { SHEET_CONFIG, DEFAULT_SEARCH_COLUMNS } from "@/config/config";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { translations } from "@/config/i18n";
 
 interface SearchFormProps {
   onSearch: (values: string[]) => void;
   columnNames: string[]; // The column names to search on
+  sheetName: string; // The currently selected sheet
 }
 
-const SearchForm: React.FC<SearchFormProps> = ({ onSearch, columnNames }) => {
-  const [searchValues, setSearchValues] = useState<string[]>(Array(SEARCH_COLUMNS.length).fill(""));
+const SearchForm: React.FC<SearchFormProps> = ({ onSearch, columnNames, sheetName }) => {
+  // Get sheet-specific search column configuration or use default
+  const searchColumnsConfig = SHEET_CONFIG[sheetName]?.searchColumns || DEFAULT_SEARCH_COLUMNS;
+  const [searchValues, setSearchValues] = useState<string[]>(Array(searchColumnsConfig.length).fill(""));
   const { t } = useLanguage();
 
-  // Reset search values when column names change
+  // Reset search values when column names or sheet changes
   useEffect(() => {
-    setSearchValues(Array(SEARCH_COLUMNS.length).fill(""));
-  }, [columnNames]);
+    setSearchValues(Array(searchColumnsConfig.length).fill(""));
+  }, [columnNames, sheetName, searchColumnsConfig.length]);
 
   const handleValueChange = (index: number, value: string) => {
     const newValues = [...searchValues];
@@ -40,7 +43,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch, columnNames }) => {
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
-          {SEARCH_COLUMNS.map((column, index) => {
+          {searchColumnsConfig.map((column, index) => {
             // Get display label (either custom from config or the original header name)
             const columnLabel = column.customLabel || 
                                (index < columnNames.length ? columnNames[index] : t(`column${index + 1}` as keyof typeof translations.en));

@@ -2,6 +2,8 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { RESULTS_FOUND_IMAGE } from "@/config/config";
+import { Image } from "lucide-react";
 
 interface ResultsTableProps {
   headers: string[];
@@ -24,8 +26,21 @@ const ResultsTable: React.FC<ResultsTableProps> = ({ headers, data }) => {
 
   return (
     <div className="space-y-6">
-      <div className="text-xl font-semibold">
-        {t("searchResults")}: {data.length} {t("rows")}
+      <div className="flex items-center justify-between">
+        <div className="text-xl font-semibold">
+          {t("searchResults")}: {data.length} {t("rows")}
+        </div>
+        
+        {/* Image display for found results */}
+        {RESULTS_FOUND_IMAGE && (
+          <div className="flex items-center">
+            <img 
+              src={RESULTS_FOUND_IMAGE} 
+              alt="Results Found" 
+              className="h-16 w-16 object-contain" 
+            />
+          </div>
+        )}
       </div>
       
       {data.map((row, rowIndex) => (

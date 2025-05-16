@@ -1,5 +1,5 @@
 
-import { GOOGLE_API_KEY, SPREADSHEET_ID, DISABLE_FLAG_COLUMN, SEARCH_COLUMNS } from '@/config/config';
+import { GOOGLE_API_KEY, SPREADSHEET_ID, DISABLE_FLAG_COLUMN, DEFAULT_SEARCH_COLUMNS, SHEET_CONFIG } from '@/config/config';
 
 export interface Sheet {
   id: string;
@@ -79,13 +79,17 @@ export async function fetchSheetData(sheetName: string): Promise<SheetData> {
 }
 
 /**
- * Get the search column names based on the positions defined in config
+ * Get the search column names based on the positions defined in config for the specific sheet
  * @param headers - The headers from the spreadsheet
+ * @param sheetName - The name of the sheet
  * @returns string[] - The column names to search on
  */
-export function getSearchColumnNames(headers: string[]): string[] {
+export function getSearchColumnNames(headers: string[], sheetName: string): string[] {
+  // Get the sheet-specific search column configuration or use the default
+  const searchColumns = SHEET_CONFIG[sheetName]?.searchColumns || DEFAULT_SEARCH_COLUMNS;
+  
   // Get column names based on the positions defined in the config
-  return SEARCH_COLUMNS.map(column => {
+  return searchColumns.map(column => {
     const position = column.position;
     return position < headers.length ? headers[position] : `Column ${position + 1}`;
   });

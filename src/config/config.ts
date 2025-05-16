@@ -22,15 +22,32 @@ export const SPREADSHEET_ID = "1VvBc-6z-5ViSZfCxNYjV9MWvLtJ62kDG_S5tzJi26l0";
 export const DEFAULT_SHEET_NAME = "Sheet2";
 
 // Search Columns Configuration
-// Configure which columns to use for search (by position)
-// First column = 0, Second column = 1, and so on
-// Add or remove entries to change the number of search fields
-export const SEARCH_COLUMNS = [
+// Configure sheet-specific search columns
+export const SHEET_CONFIG = {
+  "Sheet1": {
+    searchColumns: [
+      { position: 0, customLabel: null }, // Only one search field for Sheet1
+    ]
+  },
+  "Sheet2": {
+    searchColumns: [
+      { position: 0, customLabel: null }, // First search column
+      { position: 1, customLabel: null }, // Second search column
+    ]
+  },
+  // Add more sheet configurations as needed
+};
+
+// Default search columns for sheets not specifically configured above
+export const DEFAULT_SEARCH_COLUMNS = [
   { position: 0, customLabel: null }, // First search column
   { position: 1, customLabel: null }, // Second search column
   // Uncomment and modify to add more search columns:
   // { position: 2, customLabel: null }, // Third search column
 ];
+
+// Image to display when search results are found
+export const RESULTS_FOUND_IMAGE = "/placeholder.svg"; // Path to the image to display when results are found
 
 // Disable Flag Column (Optional)
 // If your spreadsheet has a column that should be used to hide certain rows,
@@ -49,4 +66,3 @@ export const ROWS_PER_PAGE = 10; // Number of rows to display per page
 // Logo Configuration
 // Path to your logo image. Set to empty string ("") to hide logo.
 export const LOGO_PATH = "/placeholder.svg"; // Example: "/logo.png" or "https://yoursite.com/logo.png"
-
